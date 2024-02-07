@@ -134,4 +134,8 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE O
 4. [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control)
 5. [HEAD & OPTIONS](https://stackoverflow.com/questions/6660019/restful-api-methods-head-options#:~:text=OPTIONS%20tells%20you%20things%20such,status%20code%20would%20be%20returned.)
 6. [Content-Type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)
-7. 
+7. [Sequelize-Model](https://sequelize.org/docs/v6/core-concepts/model-basics/)
+8. [Model-Sync](https://sequelize.org/docs/v7/models/model-synchronization/)
+9. [HTTP-StatusCode-MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+10. [Using-workflows](https://docs.github.com/en/actions/using-workflows)
+11. [Workflow-template](https://github.com/actions/starter-workflows/blob/main/ci/node.js.yml)
