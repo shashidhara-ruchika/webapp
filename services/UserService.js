@@ -43,7 +43,7 @@ export const updateSelfUser = async (user, userDetails) => {
   }
 
   if (userDetails.password != null) {
-    user.password = userDetails.password;
+    user.password = await generateHash(userDetails.password);
   }
 
   const updatedUser = await saveUser(user);
