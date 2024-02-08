@@ -12,7 +12,7 @@ const strongPasswordJoiObject = Joi.string()
 const onlyLetterPattern = /^[a-zA-Z]+$/;
 const onlyLetterPatternJoiObject = Joi.string()
   .pattern(onlyLetterPattern)
-  .message("Must contain only Letters");
+  .message("Name must contain only Letters");
 
 export const createUserValidationSchema = Joi.object({
   first_name: onlyLetterPatternJoiObject.required().min(1).max(50),
