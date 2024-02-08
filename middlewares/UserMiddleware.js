@@ -14,6 +14,8 @@ export const createUserValidationSchema = Joi.object({
   last_name: Joi.string().required().min(1).max(50),
   password: strongPasswordJoiObject.required(),
   username: Joi.string().email().required(),
+  account_created: Joi.string(),
+  account_updated: Joi.string(),
 }).unknown(true);
 
 export const validateCreateUserDetails = (req, res, next) => {
@@ -47,5 +49,21 @@ export const validateUpdateUserDetails = (req, res, next) => {
       .end();
     return res;
   }
+  next();
+};
+
+export const setUserHeaders = (req, res, next) => {
+  res.removeHeader("Connection");
+  res.removeHeader("Keep-Alive");
+  res.setHeader("Cache-Control", "no-cache");
+  // res.setHeader("Content-Encoding", "gzip");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,Content-Type,Accept,Origin"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Expires", "-1");
   next();
 };

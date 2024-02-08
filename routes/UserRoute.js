@@ -10,6 +10,7 @@ import {
 } from "../middlewares/CommonMiddleware.js";
 import { handleMethodNotAllowed } from "../controllers/CommonMethod.js";
 import {
+  setUserHeaders,
   validateCreateUserDetails,
   validateUpdateUserDetails,
 } from "../middlewares/UserMiddleware.js";
@@ -19,27 +20,29 @@ export const userRouter = express.Router();
 
 // endpoint '/'
 
-userRouter.head("/", handleMethodNotAllowed);
-userRouter.get("/", handleMethodNotAllowed);
+userRouter.head("/", setUserHeaders, handleMethodNotAllowed);
+userRouter.get("/", setUserHeaders, handleMethodNotAllowed);
 
 userRouter.post(
   "/",
+  setUserHeaders,
   validateNoQueryParams,
   validateCreateUserDetails,
   createAUser
 );
 
-userRouter.put("/", handleMethodNotAllowed);
-userRouter.delete("/", handleMethodNotAllowed);
-userRouter.patch("/", handleMethodNotAllowed);
-userRouter.options("/", handleMethodNotAllowed);
+userRouter.put("/", setUserHeaders, handleMethodNotAllowed);
+userRouter.delete("/", setUserHeaders, handleMethodNotAllowed);
+userRouter.patch("/", setUserHeaders, handleMethodNotAllowed);
+userRouter.options("/", setUserHeaders, handleMethodNotAllowed);
 
 // endpoint '/self'
 
-userRouter.head("/self", handleMethodNotAllowed);
+userRouter.head("/self", setUserHeaders, handleMethodNotAllowed);
 
 userRouter.get(
   "/self",
+  setUserHeaders,
   protectRoute,
   validateNoQueryParams,
   validateNoBody,
@@ -47,13 +50,14 @@ userRouter.get(
 );
 userRouter.put(
   "/self",
+  setUserHeaders,
   protectRoute,
   validateNoQueryParams,
   validateUpdateUserDetails,
   updateSelfUserDetails
 );
 
-userRouter.post("/self", handleMethodNotAllowed);
-userRouter.delete("/self", handleMethodNotAllowed);
-userRouter.patch("/self", handleMethodNotAllowed);
-userRouter.options("/self", handleMethodNotAllowed);
+userRouter.post("/self", setUserHeaders, handleMethodNotAllowed);
+userRouter.delete("/self", setUserHeaders, handleMethodNotAllowed);
+userRouter.patch("/self", setUserHeaders, handleMethodNotAllowed);
+userRouter.options("/self", setUserHeaders, handleMethodNotAllowed);

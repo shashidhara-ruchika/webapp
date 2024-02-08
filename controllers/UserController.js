@@ -22,15 +22,15 @@ export const createAUser = async (req, res) => {
     const user = await createANewUser(newUser);
     return res.status(201).json(user).end();
   } catch (error) {
-    if (error.name === ERROR_USER_ALREADY_EXISTS) {
-      errorLogger.error(error.message);
+    if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
+      errorLogger.error("Service Unavailable: Error:\n", error);
       return res
         .status(error.statusCode)
         .json({ message: error.message })
         .end();
     }
-    if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
-      errorLogger.error("Service Unavailable: Error:\n", error);
+    if (error.name == ERROR_USER_ALREADY_EXISTS) {
+      errorLogger.error(error.message);
       return res
         .status(error.statusCode)
         .json({ message: error.message })
@@ -48,15 +48,15 @@ export const getSelfUserDetails = async (req, res) => {
   try {
     return res.status(200).json(getSelfUser(req.user)).end();
   } catch (error) {
-    if (error.name === ERROR_USER_FROM_REQUEST_NOT_FOUND) {
-      errorLogger.error(error.message);
+    if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
+      errorLogger.error("Service Unavailable: Error:\n", error);
       return res
         .status(error.statusCode)
         .json({ message: error.message })
         .end();
     }
-    if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
-      errorLogger.error("Service Unavailable: Error:\n", error);
+    if (error.name == ERROR_USER_FROM_REQUEST_NOT_FOUND) {
+      errorLogger.error(error.message);
       return res
         .status(error.statusCode)
         .json({ message: error.message })
@@ -75,15 +75,15 @@ export const updateSelfUserDetails = async (req, res, next) => {
     await updateSelfUser(req.user, req.body);
     return res.status(204).end();
   } catch (error) {
-    if (error.name === ERROR_USER_FROM_REQUEST_NOT_FOUND) {
-      errorLogger.error(error.message);
+    if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
+      errorLogger.error("Service Unavailable: Error:\n", error);
       return res
         .status(error.statusCode)
         .json({ message: error.message })
         .end();
     }
-    if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
-      errorLogger.error("Service Unavailable: Error:\n", error);
+    if (error.name == ERROR_USER_FROM_REQUEST_NOT_FOUND) {
+      errorLogger.error(error.message);
       return res
         .status(error.statusCode)
         .json({ message: error.message })

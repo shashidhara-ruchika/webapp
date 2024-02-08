@@ -34,7 +34,7 @@ export const testPostgresDBConnection = async () => {
 export const syncPostgresDBConnection = async () => {
   try {
     await postgresDBConnection.sync({
-      force: JSON.parse(process.env.DROP_DATABASE),
+      force: JSON.parse(process.env.DROP_DATABASE) || false,
     });
     infoLogger.info("Postgres Database Sync is successful");
     return true;

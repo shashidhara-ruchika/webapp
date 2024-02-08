@@ -9,7 +9,7 @@ My web application for: [CYSE6225 Network Structures &amp; Cloud Computing](http
 * Backend Frameworks: `Node.js` , `Express.js`
 * ORM Framework: `Sequelize`
 
-## How to run the application
+## How to build & run the application
 
 1. Generate the npm packages
 
