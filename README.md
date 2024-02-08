@@ -17,19 +17,19 @@ My web application for: [CYSE6225 Network Structures &amp; Cloud Computing](http
 npm install
 ```
 
-2. Add `.env` file
+2. Add `.env` file with the below fields
    
 ```
-PORT=8080
-DATABASE_NAME='app_db'
-DATABASE_USER='myuser'
-DATABASE_PASSWORD='password'
-DATABASE_HOST='localhost'
-DATABASE_POOL_MAX=5
-DATABASE_POOL_MIN=0
-DATABASE_POOL_ACQUIRE=30000
-DATABASE_POOL_IDLE=10000
-DROP_DATABASE='true'
+PORT=
+DATABASE_NAME=
+DATABASE_USER=
+DATABASE_PASSWORD=
+DATABASE_HOST=
+DATABASE_POOL_MAX=
+DATABASE_POOL_MIN=
+DATABASE_POOL_ACQUIRE=
+DATABASE_POOL_IDLE=
+DROP_DATABASE=
 ```
 
 1. Run the application

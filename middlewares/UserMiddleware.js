@@ -9,9 +9,14 @@ const strongPasswordJoiObject = Joi.string()
     "Password must contain atleast one lowercase, uppercase, digit & special character and have length between 8 - 50"
   );
 
+const onlyLetterPattern = /^[a-zA-Z]+$/;
+const onlyLetterPatternJoiObject = Joi.string()
+  .pattern(onlyLetterPattern)
+  .message("Must contain only Letters");
+
 export const createUserValidationSchema = Joi.object({
-  first_name: Joi.string().required().min(1).max(50),
-  last_name: Joi.string().required().min(1).max(50),
+  first_name: onlyLetterPatternJoiObject.required().min(1).max(50),
+  last_name: onlyLetterPatternJoiObject.required().min(1).max(50),
   password: strongPasswordJoiObject.required(),
   username: Joi.string().email().required(),
   account_created: Joi.string(),
@@ -32,8 +37,8 @@ export const validateCreateUserDetails = (req, res, next) => {
 };
 
 export const updateUserValidationSchema = Joi.object({
-  first_name: Joi.string().min(1).max(50),
-  last_name: Joi.string().min(1).max(50),
+  first_name: onlyLetterPatternJoiObject.min(1).max(50),
+  last_name: onlyLetterPatternJoiObject.min(1).max(50),
   password: strongPasswordJoiObject,
 })
   .or("first_name", "last_name", "password")

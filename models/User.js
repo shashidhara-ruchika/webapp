@@ -36,7 +36,7 @@ export const User = postgresDBConnection.define(
     },
   },
   {
-    modelName: "User",
+    tableName: "users",
     indexes: [
       {
         unique: true,
