@@ -7,8 +7,9 @@ beforeAll(() => {
   appServer = app.listen();
 });
 
-afterAll(() => {
-  return appServer && appServer.close();
+afterAll((done) => {
+  return appServer && appServer.close(done);
+  // app.close();
 });
 
 describe("Assignment 1 | Test 1 | HealthCheck Sucess", () => {

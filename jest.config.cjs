@@ -7,6 +7,6 @@ module.exports = {
     // globalSetup: './tests/setup.js',
     // globalTeardown: './teardown.js',
     testEnvironmentOptions: {
-      "detectOpenHandles": true
+      "detectOpenHandles": "none"
     }
   };
