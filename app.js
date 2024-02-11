@@ -4,7 +4,7 @@ import { healthcheckRouter } from './routes/HealthcheckRoute.js';
 import { errorLogger, infoLogger } from './services/LoggerService.js'
 import { userRouter } from './routes/UserRoute.js';
 
-const app = express()
+export const app = express()
 app.use(express.json())
 
 testPostgresDBConnection()

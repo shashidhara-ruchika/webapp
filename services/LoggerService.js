@@ -2,7 +2,7 @@ import log4js from "log4js";
 
 log4js.configure({
   appenders: {
-    console: { type: "console" },
+    console: { type: process.env.JEST_WORKER_ID ? "stdout" : "console" },
   },
   categories: {
     default: { appenders: ["console"], level: "debug" },
