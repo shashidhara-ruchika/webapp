@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "../app";
+import { closeServer, app } from "../app";
 
 let appServer;
 
@@ -7,9 +7,8 @@ beforeAll(() => {
   appServer = app.listen();
 });
 
-afterAll((done) => {
-  return appServer && appServer.close(done);
-  // app.close();
+afterAll(() => {
+  closeServer(appServer);
 });
 
 describe("Assignment 1 | Test 1 | HealthCheck Sucess", () => {
