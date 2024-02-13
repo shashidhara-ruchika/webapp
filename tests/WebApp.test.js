@@ -56,7 +56,7 @@ describe("Assignment 3 | Test 1 | Create User Account Success", () => {
         "Authorization",
         "Basic " + Buffer.from(email + ":" + strongPassword).toString("base64")
       );
-    expect(fetchUserResponse.statusCode).toEqual(201);
+    expect(fetchUserResponse.statusCode).toEqual(200);
     expect(fetchUserResponse.body.first_name).toEqual(firstName);
     expect(fetchUserResponse.body.last_name).toEqual(lastName);
     expect(fetchUserResponse.body.username).toEqual(email);
