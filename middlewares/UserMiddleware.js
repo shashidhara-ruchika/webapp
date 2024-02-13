@@ -19,9 +19,9 @@ export const createUserValidationSchema = Joi.object({
   last_name: onlyLetterPatternJoiObject.required().min(1).max(50),
   password: strongPasswordJoiObject.required(),
   username: Joi.string().email().required(),
-  account_created: Joi.string(),
-  account_updated: Joi.string(),
-}).unknown(true);
+  // account_created: Joi.string(),
+  // account_updated: Joi.string(),
+}).unknown(false);
 
 export const validateCreateUserDetails = (req, res, next) => {
   const { error, value } = createUserValidationSchema.validate(req.body);

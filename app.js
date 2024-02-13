@@ -32,11 +32,3 @@ export const closeServer = (appServer) => {
     infoLogger.info("Server closed.");
   });
 };
-
-process.on("SIGINT", () => {
-  closeServer(server);
-});
-
-process.on("SIGTERM", () => {
-  closeServer(server);
-});
