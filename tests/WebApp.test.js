@@ -8,7 +8,7 @@ beforeAll(() => {
 });
 
 afterAll( () => {
-  closeServer(appServer);
+  appServer.close();
 });
 
 describe("Assignment 1 | Test 1 | HealthCheck Sucess", () => {
