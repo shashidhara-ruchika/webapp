@@ -30,9 +30,27 @@ export const closeServer = (appServer) => {
   infoLogger.info("Closing server gracefully...");
   appServer.close(() => {
     infoLogger.info("Server closed.");
-    process.exit(0); // Exiting the process
+    // process.exit(0); // Exiting the process
   });
 };
+
+// export const closeServer = (appServer) => {
+//   return new Promise((resolve, reject) => {
+//     if (!appServer) {
+//       reject(new Error('No server provided to close'));
+//     }
+//     infoLogger.info("Closing server gracefully...");
+//     appServer.close((error) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         infoLogger.info("Server closed.");
+//         resolve();
+//       }
+//     });
+//   });
+// };
+
 
 // Listen for SIGINT (Ctrl+C) event
 process.on("SIGINT", () => {

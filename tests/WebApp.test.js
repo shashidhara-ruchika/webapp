@@ -7,7 +7,7 @@ beforeAll(() => {
   appServer = app.listen();
 });
 
-afterAll(() => {
+afterAll( () => {
   closeServer(appServer);
 });
 
@@ -48,7 +48,7 @@ describe("Assignment 3 | Test 1 | Create User Account Success", () => {
     const createUserResponse = await request(app)
       .post("/v1/user")
       .send(createUserRequestBody);
-    expect(createUserResponse.statusCode).toEqual(200);
+    expect(createUserResponse.statusCode).toEqual(201);
 
     const fetchUserResponse = await request(app)
       .get("/v1/user/self")
