@@ -47,7 +47,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: | 
-        echo "DATABASE_NAME: ${{ secrets.DB_NAME }}"
+        echo "DATABASE_NAME: $DB_NAME"
     - run: npm run build --if-present
     - run: npm install
     - run: npm run test
