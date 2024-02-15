@@ -7,9 +7,11 @@ beforeAll(() => {
   appServer = app.listen();
 });
 
-afterAll( () => {
-  appServer.close();
+afterAll(() => {
+  closeServer(appServer);
 });
+
+/* Assignment 1 & 2 */
 
 describe("Assignment 1 | Test 1 | HealthCheck Sucess", () => {
   it("Expect 200 for success", async () => {
@@ -32,10 +34,19 @@ describe("Assignment 1 | Test 3 | HealthCheck Invalid Query Param", () => {
   });
 });
 
+/* Assignment 3 */
+
 const firstName = "Jane";
 const lastName = "Doe";
 const strongPassword = "Abcd@123";
 const email = "jane.doe@example.com";
+
+const createBasicAuth = (username, password) => {
+  return "Basic " + Buffer.from(username + ":" + password).toString("base64");
+};
+
+const userPath = "/v1/user";
+const selfPath = "/self";
 
 describe("Assignment 3 | Test 1 | Create User Account Success", () => {
   it("Expect correct user account creation", async () => {
@@ -46,16 +57,13 @@ describe("Assignment 3 | Test 1 | Create User Account Success", () => {
       username: email,
     };
     const createUserResponse = await request(app)
-      .post("/v1/user")
+      .post(userPath)
       .send(createUserRequestBody);
     expect(createUserResponse.statusCode).toEqual(201);
 
     const fetchUserResponse = await request(app)
-      .get("/v1/user/self")
-      .set(
-        "Authorization",
-        "Basic " + Buffer.from(email + ":" + strongPassword).toString("base64")
-      );
+      .get(userPath + selfPath)
+      .set("Authorization", createBasicAuth(email, strongPassword));
     expect(fetchUserResponse.statusCode).toEqual(200);
     expect(fetchUserResponse.body.first_name).toEqual(firstName);
     expect(fetchUserResponse.body.last_name).toEqual(lastName);
@@ -70,21 +78,18 @@ describe("Assignment 3 | Test 2 | Update User Account Success", () => {
       last_name: "Din",
     };
     const updateUserResponse = await request(app)
-      .put("/v1/user/self")
+      .put(userPath + selfPath)
       .send(updateUserRequestBody)
-      .set(
-        "Authorization",
-        "Basic " + Buffer.from(email + ":" + strongPassword).toString("base64")
-      );
+      .set("Authorization", createBasicAuth(email, strongPassword));
     expect(updateUserResponse.statusCode).toEqual(204);
 
     const fetchUserResponse = await request(app)
-      .get("/v1/user/self")
-      .set(
-        "Authorization",
-        "Basic " + Buffer.from(email + ":" + strongPassword).toString("base64")
-      );
+      .get(userPath + selfPath)
+      .set("Authorization", createBasicAuth(email, strongPassword));
     expect(fetchUserResponse.statusCode).toEqual(200);
+    expect(fetchUserResponse.body.account_created).not.toEqual(
+      fetchUserResponse.body.account_updated
+    );
     expect(fetchUserResponse.body.first_name).toEqual(
       updateUserRequestBody.first_name
     );
