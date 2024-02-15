@@ -45,7 +45,7 @@ jobs:
     - name: Setup Postgres
       run: |
         sudo apt update
-        sudo apt install -y postgres postgresql-contrib
+        sudo apt install -y postgresql postgresql-contrib
         sudo systemctl start postgres
 
         sudo -u postgres psql -c "CREATE DATABASE ${{ secrets.DATABASE_NAME }};"
