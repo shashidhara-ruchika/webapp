@@ -45,7 +45,7 @@ npm run dev
 
 5. Run tests for the application
 ```
-npm run 
+npm run test
 ```
 
 
