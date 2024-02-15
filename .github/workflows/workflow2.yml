@@ -12,15 +12,15 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
-        ports:
-          - 5432:5432
+    # services:
+    #   postgres:
+    #     image: postgres:latest
+    #     env:
+    #       POSTGRES_USER: ${{ secrets.DATABASE_USER }}
+    #       POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+    #       POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
+    #     ports:
+    #       - 5432:5432
 
     strategy:
       matrix:
@@ -41,6 +41,16 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup Postgres
+      run: |
+        sudo apt update
+        sudo apt install -y postgres postgresql-contrib
+        sudo systemctl start postgres
+
+        sudo -u postgres psql -c "CREATE DATABASE ${{ secrets.DATABASE_NAME }};"
+        sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH PASSWORD ${{ secrets.DATABASE_PASSWORD }};"
+        sudo -u postgres psql -c "GRANT ALL PRIVILAGES ON DATABASE ${{ secrets.DATABASE_NAME }} TO ${{ secrets.DATABASE_USER }};"
     
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
