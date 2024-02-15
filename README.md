@@ -167,3 +167,4 @@ ALTER USER postgres WITH PASSWORD 'password';
 10. [Using-workflows](https://docs.github.com/en/actions/using-workflows)
 11. [Node-js-workflow-template](https://github.com/actions/starter-workflows/blob/main/ci/node.js.yml)
 12. [Install Postgres on CentOS](https://www.linode.com/docs/guides/centos-install-and-use-postgresql/)
+13. [Integration Testing](https://www.npmjs.com/package/supertest)
