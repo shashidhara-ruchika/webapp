@@ -32,7 +32,7 @@ DATABASE_POOL_IDLE=
 DROP_DATABASE=
 ```
 
-1. Run the application
+3. Run the application
 
 ```
 npm run start
@@ -43,6 +43,10 @@ npm run start
 npm run dev
 ```
 
+5. Run tests for the application
+```
+npm run 
+```
 
 
 ## Commands Used
@@ -67,6 +71,18 @@ ls
 
 ```
 curl
+```
+
+```
+ssh
+```
+
+```
+scp
+```
+
+```
+unzip
 ```
 
 ### Git
@@ -95,6 +111,13 @@ git commit -m
 git push -u origin
 ```
 
+```
+git merge main
+```
+
+```
+git pull origin main
+```
 
 
 ### Postgres
@@ -122,6 +145,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO myuser;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO myuser;
 ```
 
+```
+ALTER USER postgres WITH PASSWORD 'password';
+```
+
+```
+ALTER USER postgres WITH PASSWORD 'password';
+```
 
 ## References
 
@@ -136,3 +166,4 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE O
 9. [HTTP-StatusCode-MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 10. [Using-workflows](https://docs.github.com/en/actions/using-workflows)
 11. [Node-js-workflow-template](https://github.com/actions/starter-workflows/blob/main/ci/node.js.yml)
+12. [Install Postgres on CentOS](https://www.linode.com/docs/guides/centos-install-and-use-postgresql/)
