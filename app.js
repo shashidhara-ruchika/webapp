@@ -2,10 +2,10 @@ import express from "express";
 import {
   syncPostgresDBConnection,
   testPostgresDBConnection,
-} from "./databases/PostgresDBConnection.js";
-import { healthcheckRouter } from "./routes/HealthcheckRoute.js";
-import { errorLogger, infoLogger } from "./services/LoggerService.js";
-import { userRouter } from "./routes/UserRoute.js";
+} from "./src/databases/PostgresDBConnection.js";
+import { healthcheckRouter } from "./src/routes/HealthcheckRoute.js";
+import { errorLogger, infoLogger } from "./src/services/LoggerService.js";
+import { userRouter } from "./src/routes/UserRoute.js";
 
 export const app = express();
 app.use(express.json());
