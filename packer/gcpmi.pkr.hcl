@@ -31,12 +31,12 @@ build {
   ]
 
   provisioner "file" {
-    source = "webapp.zip"
+    source      = "webapp.zip"
     destination = "/tmp/"
   }
 
   provisioner "file" {
-    source = "./scripts/webapp.service"
+    source      = "./scripts/webapp.service"
     destination = "/tmp/"
   }
 
@@ -54,7 +54,7 @@ build {
 variable "project_id" {
   description = "The project ID where the image will be created"
   type        = string
-  default = "project_id"
+  default     = "project_id"
 }
 
 variable "source_image" {
