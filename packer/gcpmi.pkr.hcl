@@ -42,10 +42,10 @@ build {
 
   provisioner "shell" {
     scripts = [
-      "./scripts/s1_install_dependencies.sh",
-      "./scripts/s2_create_csye6225_user.sh",
-      "./scripts/s3_setup_webapp.sh",
-      "./scripts/s4_webapp_start.sh"
+      "./scripts/install_dependencies.sh",
+      "./scripts/create_csye6225_user.sh",
+      "./scripts/setup_webapp.sh",
+      "./scripts/webapp_start.sh"
     ]
   }
 
