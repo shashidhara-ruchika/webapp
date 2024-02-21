@@ -42,8 +42,8 @@ build {
 
   provisioner "shell" {
     scripts = [
-      "./scripts/install_dependencies.sh",
       "./scripts/create_csye6225_user.sh",
+      "./scripts/install_dependencies.sh",
       "./scripts/setup_webapp.sh",
       "./scripts/webapp_start.sh"
     ]
