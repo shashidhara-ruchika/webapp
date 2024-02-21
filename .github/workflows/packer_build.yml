@@ -44,7 +44,25 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm run build --if-present
     - run: npm install
-    # - run: npm run test
+    - run: npm run test
+
+    - name: Create env
+      run: |
+        touch .env
+        echo "PORT=${{ secrets.PORT }}" >> .env
+        echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+        echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> .env
+        echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+        echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
+        echo "DATABASE_POOL_MAX=${{ secrets.DATABASE_POOL_MAX }}" >> .env
+        echo "DATABASE_POOL_MIN=${{ secrets.DATABASE_POOL_MIN }}" >> .env
+        echo "DATABASE_POOL_ACQUIRE=${{ secrets.DATABASE_POOL_ACQUIRE }}" >> .env
+        echo "DATABASE_POOL_IDLE=${{ secrets.DATABASE_POOL_IDLE }}" >> .env
+        echo "DROP_DATABASE=${{ secrets.DROP_DATABASE }}" >> .env
+        cat .env
+
+    - name: Delete any created node_modules
+      run: rm -r node_modules
 
     - name: Zip webapp file
       run: cd ../ && zip -r webapp.zip webapp && cd - && cp ../webapp.zip .
