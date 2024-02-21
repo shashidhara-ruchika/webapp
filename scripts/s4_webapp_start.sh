@@ -16,5 +16,5 @@ sudo systemctl start webapp
 sudo systemctl status webapp
 
 # Install rsyslog for audit logs
-sudo apt install -y rsyslog
+sudo yum install -y rsyslog
 sudo systemctl daemon-reload
