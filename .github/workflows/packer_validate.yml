@@ -2,7 +2,8 @@ name: Packer Validate
 
 on:
   pull_request:
-    branches: [ "main" ]
+    types:
+      - closed
 
 jobs:
   packer_validate:
