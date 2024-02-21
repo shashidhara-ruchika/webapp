@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo mkdir -p /opt/csye6225/
+# sudo mkdir -p /opt/csye6225/
 
 # Create User & Group
 sudo groupadd -f csye6225
