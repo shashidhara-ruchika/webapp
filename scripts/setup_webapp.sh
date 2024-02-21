@@ -3,8 +3,10 @@
 # Unzip packages
 sudo unzip /tmp/webapp.zip -d /opt/csye6225/
 
+# Go to Webapp Dir
+cd /opt/csye6225/webapp/
+
 # Add env configs
-# cd /opt/csye6225/webapp/
 # touch .env
 # echo "PORT=8080" >> .env
 # echo "DATABASE_NAME=app_db" >> .env
