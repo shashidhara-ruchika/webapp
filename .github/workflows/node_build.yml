@@ -1,18 +1,27 @@
-name: Node.js Test
+name: Node.js Install
 
 on:
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  test:
+  node_build:
 
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
+        ports:
+          - 5432:5432
 
     strategy:
       matrix:
         node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     env:
       PORT: ${{ secrets.PORT }}
@@ -27,22 +36,11 @@ jobs:
       DROP_DATABASE: ${{ secrets.DROP_DATABASE }}
     
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup Postgres
-      run: |
-        sudo apt update
-        sudo apt install -y postgresql postgresql-contrib
-        sudo systemctl start postgresql.service
-
-        sudo -u postgres psql -c "CREATE DATABASE ${{ secrets.DATABASE_NAME }};"
-        sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
-        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${{ secrets.DATABASE_NAME }} TO ${{ secrets.DATABASE_USER }};"
+    - uses: actions/checkout@v3
     
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm run build --if-present
     - run: npm install
-    - run: npm run test

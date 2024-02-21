@@ -1,0 +1,31 @@
+name: Packer Validate
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  packer_validate:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Packer
+      run: |
+        sudo apt-get update
+        sudo apt install -y packer
+
+    - name: Zip webapp file
+      run: cd ../ && zip -r webapp.zip webapp && cd - && cp ../webapp.zip .
+    
+    - name: Packer Init
+      run: packer init ./packer
+    
+    - name: Packer Format
+      run: packer fmt -check ./packer
+    
+    - name: Packer Template
+      run: packer validate ./packer
+

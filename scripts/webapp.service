@@ -1,5 +1,6 @@
 [Unit]
 Description=Web App Service
+ConditionPathExists=/opt/csye6225/webapp
 After=network.target
 
 [Service]

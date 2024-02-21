@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Move systemd file to etc
-sudo cp /home/admin/webapp.service /etc/systemd/system/
+sudo cp /tmp/webapp.service /etc/systemd/system/
 
 # Provide access
 sudo chown csye6225:csye6225 /etc/systemd/system/webapp.service

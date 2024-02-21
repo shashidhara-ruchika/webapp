@@ -5,14 +5,13 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
+  packer_build:
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     env:
       PORT: ${{ secrets.PORT }}
@@ -47,20 +46,51 @@ jobs:
     - run: npm install
     - run: npm run test
 
-  packer_validate:
-    runs-on: ubuntu-latest
+    - name: Zip webapp file
+      run: cd ../ && zip -r webapp.zip webapp && cd - && cp ../webapp.zip .
 
-    steps:
-        - uses: actions/checkout@v4
+    - name: Install Packer
+      run: sudo apt install -y packer
+
+
+
+
+    - name: Packer Init
+      run: packer init ./packer
     
-        - name: Setup Packer
-          run: echo "Hello"
-
-  packer_build:
-    runs-on: ubuntu-latest
-
-    steps:
-        - uses: actions/checkout@v4
+    - name: Packer Format
+      run: packer -fmt -check ./packer
     
-        - name: Setup Packer
-          run: echo "Hello"
+    - name: Packer Template
+      run: packer validate ./packer
+
+  
+    
+    
+    - name: GCP Authentication
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_AUTH_CREDENTIALS }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: GCloud Info
+      run: gcloud info
+
+    - name: Setup 'packer'
+      uses: hashicorp/setup-packer@main
+      with:
+        version: '1.10.1'
+
+    - name: Packer Init
+      run: packer init ./packer
+
+    - name: Packer Build
+      run: packer build ./packer -var 'project_id=${{ secrets.GCP_PROJECT_ID }}'
+
+
+
+
+
+    
