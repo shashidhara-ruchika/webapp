@@ -44,11 +44,37 @@ build {
     scripts = [
       "./scripts/install_dependencies.sh",
       "./scripts/create_csye6225_user.sh",
+      "./scripts/setup_database.sh",
       "./scripts/setup_webapp.sh",
       "./scripts/webapp_start.sh"
     ]
+
+    environment_vars = [
+      "DATABASE_NAME=${var.database_name}",
+      "DATABASE_USER=${var.database_user}",
+      "DATABASE_PASSWORD=${var.database_password}"
+    ]
+
   }
 
+}
+
+variable "database_name" {
+  description = "Webapp POstgres DB Name"
+  type        = string
+  default     = "app_db"
+}
+
+variable "database_user" {
+  description = "Webapp Postgres DB User"
+  type        = string
+  default     = "app_user"
+}
+
+variable "database_password" {
+  description = "Webapp POstgres DB Password"
+  type        = string
+  default     = "password"
 }
 
 variable "project_id" {
