@@ -84,7 +84,7 @@ variable "region" {
 variable "ssh_username" {
   description = "The SSH username for connecting to the instance"
   type        = string
-  default     = "packer"
+  default     = "csye6225"
 }
 
 variable "machine_type" {
