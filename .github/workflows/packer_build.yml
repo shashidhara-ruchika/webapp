@@ -59,9 +59,9 @@ jobs:
       run: packer init ./packer
     
     - name: Packer Format
-      run: packer -fmt -check ./packer
+      run: packer fmt -check ./packer
     
-    - name: Packer Template
+    - name: Packer Validate
       run: packer validate ./packer
 
   

@@ -26,6 +26,6 @@ jobs:
     - name: Packer Format
       run: packer fmt -check ./packer
     
-    - name: Packer Template
+    - name: Packer Validate
       run: packer validate ./packer
 
