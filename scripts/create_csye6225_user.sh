@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create User & Group
-# sudo groupadd -f csye6225
+sudo groupadd -f csye6225
 # sudo useradd -s /usr/sbin/nologin -g csye6225 -d /opt/csye6225 -m csye6225
 sudo adduser csye6225 --shell /usr/sbin/nologin -g csye6225 -d /opt/csye6225 -m csye6225
 
