@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # OS Update
-# sudo yum update -y
+sudo yum upgrade -y
+sudo yum update -y
 
 # Install zip
 sudo yum install -y unzip
