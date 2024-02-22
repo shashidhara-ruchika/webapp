@@ -2,8 +2,7 @@ name: Node.js Integration Test & Packer Build
 
 on:
   pull_request:
-    types:
-      - closed
+    branches: [ "main" ]
 
 jobs:
   packer_build:
