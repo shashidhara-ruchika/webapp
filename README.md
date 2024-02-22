@@ -48,6 +48,21 @@ npm run dev
 npm run test
 ```
 
+6. Initialize Packer
+```
+packer init ./packer
+```
+
+7. Format Packer
+```
+packer fmt ./packer
+```
+
+8. Validate Packer
+```
+packer validate ./packer
+```
+
 
 ## Commands Used
 
@@ -168,3 +183,7 @@ ALTER USER postgres WITH PASSWORD 'password';
 11. [Node-js-workflow-template](https://github.com/actions/starter-workflows/blob/main/ci/node.js.yml)
 12. [Install Postgres on CentOS](https://www.linode.com/docs/guides/centos-install-and-use-postgresql/)
 13. [Integration Testing](https://www.npmjs.com/package/supertest)
+14. [GCP Packer Integrations](https://developer.hashicorp.com/packer/integrations/hashicorp/googlecompute)
+15. [Service Account Permissions](https://github.com/hashicorp/packer-plugin-googlecompute/blob/main/docs/README.md#running-on-google-cloud)
+16. [Service Account Key](https://github.com/marketplace/actions/set-up-gcloud-cloud-sdk-environment#service-account-key-json)
+17. [No User Login](https://www.baeldung.com/linux/create-non-login-user)
