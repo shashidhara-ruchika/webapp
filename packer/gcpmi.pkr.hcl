@@ -10,7 +10,7 @@ packer {
 source "googlecompute" "custom_image" {
   project_id              = var.project_id
   source_image            = var.source_image
-  source_image_family     = var.source_image_family
+  source_image_family     : var.source_image_family
   zone                    = var.zone
   region                  = var.region
   ssh_username            = var.ssh_username
