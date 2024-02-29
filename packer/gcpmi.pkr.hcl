@@ -44,7 +44,6 @@ build {
     scripts = [
       "./scripts/install_dependencies.sh",
       "./scripts/create_csye6225_user.sh",
-      "./scripts/setup_database.sh",
       "./scripts/setup_webapp.sh",
       "./scripts/webapp_start.sh"
     ]
