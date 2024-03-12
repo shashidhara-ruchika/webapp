@@ -26,6 +26,7 @@ export const server = app.listen(PORT, () =>
   infoLogger.info(`Server stared on port: ${PORT}`)
 );
 
+
 export const closeServer = (appServer) => {
   infoLogger.info("Closing server gracefully...");
   appServer.close(() => {
