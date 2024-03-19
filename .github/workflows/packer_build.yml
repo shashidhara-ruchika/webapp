@@ -6,7 +6,7 @@ name: Node.js Integration Test & Packer Build
 #       - closed
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   packer_build:
@@ -27,6 +27,7 @@ jobs:
       DATABASE_POOL_ACQUIRE: ${{ secrets.DATABASE_POOL_ACQUIRE }}
       DATABASE_POOL_IDLE: ${{ secrets.DATABASE_POOL_IDLE }}
       DROP_DATABASE: ${{ secrets.DROP_DATABASE }}
+      LOGGER_FILE_PATH: ${{ secrets.LOGGER_FILE_PATH }}
 
     steps:
       - uses: actions/checkout@v4
