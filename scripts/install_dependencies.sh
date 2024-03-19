@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # OS Update
-sudo yum update -y
-sudo yum upgrade -y
+# sudo yum update -y
+# sudo yum upgrade -y
 
 # Install zip
 sudo yum install -y unzip
@@ -25,6 +25,8 @@ curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
 # Set up ops agent for webapp logs
+echo "permission of /etc/google-cloud-ops-agent/config.yaml"
+ls -l /etc/google-cloud-ops-agent/config.yaml
 sudo cat /tmp/config.yaml >> /etc/google-cloud-ops-agent/config.yaml
 # su -c "cat /tmp/config.yaml >> /etc/google-cloud-ops-agent/config.yaml"
 echo "cat /etc/google-cloud-ops-agent/config.yaml"
