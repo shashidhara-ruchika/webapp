@@ -19,3 +19,11 @@ npm -v
 # sudo postgresql-setup --initdb
 # sudo systemctl start postgresql.service
 # sudo systemctl enable postgresql.service
+
+# Install Google Cloud Ops Agent
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+# Set up ops agent for webapp logs
+sudo cat /tmp/config.yaml >> /etc/google-cloud-ops-agent/config.yaml
+sudo systemctl restart google-cloud-ops-agent

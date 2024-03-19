@@ -40,10 +40,16 @@ build {
     destination = "/tmp/"
   }
 
+  provisioner "file" {
+    source      = "./scripts/config.yaml"
+    destination = "/tmp/"
+  }
+
   provisioner "shell" {
     scripts = [
       "./scripts/install_dependencies.sh",
       "./scripts/create_csye6225_user.sh",
+      "./scripts/setup_log_dirs.sh",
       "./scripts/setup_webapp.sh",
       "./scripts/webapp_start.sh"
     ]

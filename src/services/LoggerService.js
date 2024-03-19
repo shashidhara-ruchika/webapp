@@ -8,10 +8,6 @@ const customFormat = format((info) => {
   return info;
 });
 
-// const consoleFormat = format.printf(({ level, message, time }) => {
-//   return `[${time}] [${level.toUpperCase()}] webapp - ${message}`;
-// });
-
 const wrapMessageWithColor = (message, level) => {
   let colorizeMessage;
   switch (level) {
