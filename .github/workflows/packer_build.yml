@@ -7,7 +7,6 @@ on:
 
 jobs:
   packer_build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,91 +24,80 @@ jobs:
       DATABASE_POOL_ACQUIRE: ${{ secrets.DATABASE_POOL_ACQUIRE }}
       DATABASE_POOL_IDLE: ${{ secrets.DATABASE_POOL_IDLE }}
       DROP_DATABASE: ${{ secrets.DROP_DATABASE }}
-    
+
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup Postgres
-      run: |
-        sudo apt update
-        sudo apt install -y postgresql postgresql-contrib
-        sudo systemctl start postgresql.service
+      - name: Setup Postgres
+        run: |
+          sudo apt update
+          sudo apt install -y postgresql postgresql-contrib
+          sudo systemctl start postgresql.service
 
-        sudo -u postgres psql -c "CREATE DATABASE ${{ secrets.DATABASE_NAME }};"
-        sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
-        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${{ secrets.DATABASE_NAME }} TO ${{ secrets.DATABASE_USER }};"
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm run build --if-present
-    - run: npm install
-    - run: npm run test
+          sudo -u postgres psql -c "CREATE DATABASE ${{ secrets.DATABASE_NAME }};"
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${{ secrets.DATABASE_NAME }} TO ${{ secrets.DATABASE_USER }};"
 
-    - name: Create env
-      run: |
-        touch .env
-        echo "PORT=${{ secrets.PORT }}" >> .env
-        echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
-        echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> .env
-        echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
-        echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
-        echo "DATABASE_POOL_MAX=${{ secrets.DATABASE_POOL_MAX }}" >> .env
-        echo "DATABASE_POOL_MIN=${{ secrets.DATABASE_POOL_MIN }}" >> .env
-        echo "DATABASE_POOL_ACQUIRE=${{ secrets.DATABASE_POOL_ACQUIRE }}" >> .env
-        echo "DATABASE_POOL_IDLE=${{ secrets.DATABASE_POOL_IDLE }}" >> .env
-        echo "DROP_DATABASE=${{ secrets.DROP_DATABASE }}" >> .env
-        cat .env
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm run build --if-present
+      - run: npm install
+      - run: npm run test
 
-    - name: Delete any created node_modules
-      run: rm -r node_modules
+      - name: Create env
+        run: |
+          touch .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> .env
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
+          echo "DATABASE_POOL_MAX=${{ secrets.DATABASE_POOL_MAX }}" >> .env
+          echo "DATABASE_POOL_MIN=${{ secrets.DATABASE_POOL_MIN }}" >> .env
+          echo "DATABASE_POOL_ACQUIRE=${{ secrets.DATABASE_POOL_ACQUIRE }}" >> .env
+          echo "DATABASE_POOL_IDLE=${{ secrets.DATABASE_POOL_IDLE }}" >> .env
+          echo "DROP_DATABASE=${{ secrets.DROP_DATABASE }}" >> .env
+          echo "LOGGER_FILE_PATH=${{ secrets.LOGGER_FILE_PATH }}" >> .env
+          cat .env
 
-    - name: Zip webapp file
-      run: cd ../ && zip -r webapp.zip webapp && cd - && cp ../webapp.zip .
+      - name: Delete any created node_modules
+        run: rm -r node_modules
 
-    - name: Install Packer
-      run: sudo apt install -y packer
+      - name: Zip webapp file
+        run: cd ../ && zip -r webapp.zip webapp && cd - && cp ../webapp.zip .
 
+      - name: Install Packer
+        run: sudo apt install -y packer
 
+      - name: Packer Init
+        run: packer init ./packer
 
+      - name: Packer Format
+        run: packer fmt -check ./packer
 
-    - name: Packer Init
-      run: packer init ./packer
-    
-    - name: Packer Format
-      run: packer fmt -check ./packer
-    
-    - name: Packer Validate
-      run: packer validate ./packer
+      - name: Packer Validate
+        run: packer validate ./packer
 
-  
-    
-    
-    - name: GCP Authentication
-      uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ secrets.GCP_AUTH_CREDENTIALS }}
+      - name: GCP Authentication
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_AUTH_CREDENTIALS }}
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
-    - name: GCloud Info
-      run: gcloud info
+      - name: GCloud Info
+        run: gcloud info
 
-    - name: Setup 'packer'
-      uses: hashicorp/setup-packer@main
-      with:
-        version: '1.10.1'
+      - name: Setup 'packer'
+        uses: hashicorp/setup-packer@main
+        with:
+          version: "1.10.1"
 
-    - name: Packer Init
-      run: packer init ./packer
+      - name: Packer Init
+        run: packer init ./packer
 
-    - name: Packer Build
-      run: packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'database_name=${{ secrets.DATABASE_NAME }}' -var 'database_user=${{ secrets.DATABASE_USER }}' -var 'database_password=${{ secrets.DATABASE_PASSWORD }}' ./packer
-
-
-
-
-
-    
+      - name: Packer Build
+        run: packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'database_name=${{ secrets.DATABASE_NAME }}' -var 'database_user=${{ secrets.DATABASE_USER }}' -var 'database_password=${{ secrets.DATABASE_PASSWORD }}' -var 'machine_type=${{ secrets.PACKER_MACHINE_TYPE }}' -var 'zone=${{ secrets.PACKER_ZONE }}' -var 'region=${{ secrets.PACKER_REGION }}' ./packer

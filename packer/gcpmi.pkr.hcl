@@ -59,7 +59,7 @@ build {
 }
 
 variable "database_name" {
-  description = "Webapp POstgres DB Name"
+  description = "Webapp Postgres DB Name"
   type        = string
   default     = "app_db"
 }
@@ -71,7 +71,7 @@ variable "database_user" {
 }
 
 variable "database_password" {
-  description = "Webapp POstgres DB Password"
+  description = "Webapp Postgres DB Password"
   type        = string
   default     = "password"
 }
@@ -103,7 +103,7 @@ variable "zone" {
 variable "region" {
   description = "The region where the instance will be created"
   type        = string
-  default     = "us-east-1"
+  default     = "us-east1"
 }
 
 variable "ssh_username" {
@@ -115,7 +115,7 @@ variable "ssh_username" {
 variable "machine_type" {
   description = "The machine type for the instance"
   type        = string
-  default     = "n1-standard-1"
+  default     = "e2-medium"
 }
 
 variable "image_name" {
@@ -133,13 +133,13 @@ variable "image_description" {
 variable "disk_size" {
   description = "The size of the disk in GB"
   type        = number
-  default     = 20
+  default     = 100
 }
 
 variable "disk_type" {
   description = "The type of disk (e.g., pd-standard, pd-ssd)"
   type        = string
-  default     = "pd-standard"
+  default     = "pd-ssd"
 }
 
 variable "image_family" {

@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
-import { infoLogger, errorLogger } from "../services/LoggerService.js";
+import { logger } from "../services/LoggerService.js";
 
 dotenv.config();
 
@@ -23,10 +23,10 @@ export const postgresDBConnection = new Sequelize(
 export const testPostgresDBConnection = async () => {
   try {
     await postgresDBConnection.authenticate();
-    infoLogger.info("Postgres Database Connection is successful");
+    logger.info("Postgres Database Connection is successful");
     return true;
   } catch (error) {
-    errorLogger.error("Unable to Connect to Postgres Database, Error:", error);
+    logger.error("Unable to Connect to Postgres Database, Error: " + error);
     return false;
   }
 };
@@ -36,10 +36,10 @@ export const syncPostgresDBConnection = async () => {
     await postgresDBConnection.sync({
       force: JSON.parse(process.env.DROP_DATABASE) || false,
     });
-    infoLogger.info("Postgres Database Sync is successful");
+    logger.info("Postgres Database Sync is successful");
     return true;
   } catch (error) {
-    errorLogger.error("Unable to Sync Postgres Database, Error:", error);
+    logger.error("Unable to Sync Postgres Database, Error: " + error);
     return false;
   }
 };

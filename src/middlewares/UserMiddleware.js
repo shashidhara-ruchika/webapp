@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { errorLogger, infoLogger } from "../services/LoggerService.js";
+import { logger } from "../services/LoggerService.js";
 
 const strongPasswordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,50}$/;
@@ -26,7 +26,7 @@ export const createUserValidationSchema = Joi.object({
 export const validateCreateUserDetails = (req, res, next) => {
   const { error, value } = createUserValidationSchema.validate(req.body);
   if (error) {
-    errorLogger.error("Bad Request: User creation validation", error.details);
+    logger.error("Bad Request: User creation validation\n" + error.details);
     res
       .status(400)
       .json({ message: "User validation failed: " + error.details[0].message })
@@ -47,7 +47,7 @@ export const updateUserValidationSchema = Joi.object({
 export const validateUpdateUserDetails = (req, res, next) => {
   const { error, value } = updateUserValidationSchema.validate(req.body);
   if (error) {
-    errorLogger.error("Bad Request: User updation validation", error.details);
+    logger.error("Bad Request: User updation validation\n" + error.details);
     res
       .status(400)
       .json({ message: "User validation failed: " + error.details[0].message })

@@ -5,7 +5,7 @@ import {
   saveUser,
 } from "../repositories/UserRepository.js";
 import { generateHash } from "./HashService.js";
-import { infoLogger } from "./LoggerService.js";
+import { logger } from "./LoggerService.js";
 import { mapUserToUserResponse } from "./mappers/UserMapper.js";
 
 export const createANewUser = async (userDetails) => {
@@ -48,5 +48,5 @@ export const updateSelfUser = async (user, userDetails) => {
 
   const updatedUser = await saveUser(user);
 
-  infoLogger.info("Updated User:", updatedUser.toJSON());
+  logger.info("Updated User:\n" + updatedUser.toJSON());
 };

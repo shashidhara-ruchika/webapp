@@ -1,19 +1,44 @@
-import log4js from "log4js";
+import { createLogger, format, transports } from "winston";
+import dotenv from "dotenv";
 
-log4js.configure({
-  appenders: {
-    console: { type: process.env.JEST_WORKER_ID ? "stdout" : "console" },
-  },
-  categories: {
-    default: { appenders: ["console"], level: "debug" },
-  },
+dotenv.config();
+
+const customFormat = format((info) => {
+  info.time = new Date().toISOString();
+  return info;
 });
 
-export const infoLogger = log4js.getLogger();
-infoLogger.level = "info";
+// const consoleFormat = format.printf(({ level, message, time }) => {
+//   return `[${time}] [${level.toUpperCase()}] webapp - ${message}`;
+// });
 
-export const errorLogger = log4js.getLogger();
-errorLogger.level = "error";
+const wrapMessageWithColor = (message, level) => {
+  let colorizeMessage;
+  switch (level) {
+    case "error":
+      colorizeMessage = `\x1b[31m${message}\x1b[0m`; // red color
+      break;
+    case "info":
+      colorizeMessage = `\x1b[32m${message}\x1b[0m`; // green color
+      break;
+    default:
+      colorizeMessage = message;
+  }
+  return colorizeMessage;
+};
 
-export const debugLogger = log4js.getLogger();
-debugLogger.level = "debug";
+const consoleFormat = format.printf(({ level, message, time }) => {
+  const coloredMessage = wrapMessageWithColor(
+    `[${time}] [${level.toUpperCase()}] webapp - ${message}`,
+    level
+  );
+  return coloredMessage;
+});
+
+export const logger = createLogger({
+  format: format.combine(customFormat(), format.json()),
+  transports: [
+    new transports.File({ filename: process.env.LOGGER_FILE_PATH }),
+    new transports.Console({ format: consoleFormat }),
+  ],
+});
