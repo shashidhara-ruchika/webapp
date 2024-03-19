@@ -27,11 +27,8 @@ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 # Set up ops agent for webapp logs
 echo "permission of /etc/google-cloud-ops-agent/config.yaml"
 ls -l /etc/google-cloud-ops-agent/config.yaml
-ls -l /tmp/config.yaml
-# sudo cat /tmp/config.yaml >> /etc/google-cloud-ops-agent/config.yaml
-# su -c "cat /tmp/config.yaml >> /etc/google-cloud-ops-agent/config.yaml"
-# sudo sh -c "cat /tmp/config.yaml >> /etc/google-cloud-ops-agent/config.yaml"
 sudo mv /tmp/config.yaml /etc/google-cloud-ops-agent/config.yaml
+sudo chown root:root /etc/google-cloud-ops-agent/config.yaml
 ls -l /etc/google-cloud-ops-agent/config.yaml
 echo "cat /etc/google-cloud-ops-agent/config.yaml"
 sudo cat /etc/google-cloud-ops-agent/config.yaml
