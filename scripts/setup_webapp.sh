@@ -8,7 +8,3 @@ cd /opt/csye6225/webapp/
 
 # Install node packages
 sudo npm install
-
-# Check logs
-sudo cat /var/log/csye6225/webapp/webapp.log
-sudo cat /var/log/google-cloud-ops-agent/subagents/loggoing-module.log
