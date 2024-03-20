@@ -71,6 +71,7 @@ jobs:
           echo "DATABASE_POOL_IDLE=${{ secrets.DATABASE_POOL_IDLE }}" >> .env
           echo "DROP_DATABASE=${{ secrets.DROP_DATABASE }}" >> .env
           echo "LOGGER_FILE_PATH=${{ secrets.LOGGER_FILE_PATH }}" >> .env
+          echo "LOGGER_LEVEL=${{ secrets.LOGGER_LEVEL }}" >> .env
           cat .env
 
       - name: Delete any created node_modules
