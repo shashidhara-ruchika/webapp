@@ -9,7 +9,7 @@ logging:
     my-app-processor:
       type: parse_json
       time_key: timestamp
-      time_format: "%Y-%m-%dT%H:%M:%S.%fZ"
+      time_format: "%Y-%m-%dT%H:%M:%S.%LZ"
     my-log-extract-severity:
       type: modify_fields
       fields:
