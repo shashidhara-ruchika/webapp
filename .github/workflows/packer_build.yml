@@ -28,6 +28,7 @@ jobs:
       DATABASE_POOL_IDLE: ${{ secrets.DATABASE_POOL_IDLE }}
       DROP_DATABASE: ${{ secrets.DROP_DATABASE }}
       LOGGER_FILE_PATH: ${{ secrets.LOGGER_FILE_PATH }}
+      LOGGER_LEVEL: ${{ secrets.LOGGER_LEVEL }}
 
     steps:
       - uses: actions/checkout@v4

@@ -31,27 +31,29 @@ build {
   ]
 
   provisioner "file" {
+    source      = "./resources/webapp.service"
+    destination = "/tmp/"
+  }
+
+  provisioner "file" {
+    source      = "./resources/config.yaml"
+    destination = "/tmp/"
+  }
+
+  provisioner "file" {
     source      = "webapp.zip"
-    destination = "/tmp/"
-  }
-
-  provisioner "file" {
-    source      = "./scripts/webapp.service"
-    destination = "/tmp/"
-  }
-
-  provisioner "file" {
-    source      = "./scripts/config.yaml"
     destination = "/tmp/"
   }
 
   provisioner "shell" {
     scripts = [
-      "./scripts/install_dependencies.sh",
-      "./scripts/create_csye6225_user.sh",
-      "./scripts/setup_log_dirs.sh",
-      "./scripts/setup_webapp.sh",
-      "./scripts/webapp_start.sh"
+      "./resources/scripts/installations/os_update.sh",
+      "./resources/scripts/installations/install_unzip.sh",
+      "./resources/scripts/installations/install_node.sh",
+      "./resources/scripts/installations/install_ops_agent.sh",
+      "./resources/scripts/create_csye6225_user.sh",
+      "./resources/scripts/setup/setup_webapp.sh",
+      "./resources/scripts/webapp_start.sh"
     ]
 
     environment_vars = [

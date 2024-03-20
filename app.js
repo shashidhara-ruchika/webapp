@@ -23,13 +23,11 @@ app.use("/v1/user", userRouter);
 
 const PORT = process.env.port || 8080;
 export const server = app.listen(PORT, () => {
-  logger.info(`Server stared on port: ${PORT}`)
-}
-);
-
+  logger.info(`Server stared on port: ${PORT}`);
+});
 
 export const closeServer = (appServer) => {
-  logger.info("Closing server gracefully...");
+  logger.warn("Closing server gracefully...");
   appServer.close(() => {
     logger.info("Server closed.");
   });

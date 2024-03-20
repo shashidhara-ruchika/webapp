@@ -8,7 +8,7 @@ export const protectRoute = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Basic ")) {
-      logger.error("Unauthorized: Invalid or Missing Authorization Header");
+      logger.warn("Unauthorized: Invalid or Missing Authorization Header");
       res
         .status(401)
         .json({
@@ -25,7 +25,7 @@ export const protectRoute = async (req, res, next) => {
     const [username, password] = credentials.split(":");
 
     if (!username || !password) {
-      logger.error("Unauthorized: Invalid or Missing Authorization Header");
+      logger.warn("Unauthorized: Invalid or Missing Authorization Header");
       res
         .status(401)
         .json({
@@ -38,7 +38,7 @@ export const protectRoute = async (req, res, next) => {
     const user = await findUserByUsername(username);
 
     if (user == null) {
-      logger.error("Unauthorized: Invalid or Missing Authorization Header");
+      logger.warn("Unauthorized: Invalid or Missing Authorization Header");
       res
         .status(401)
         .json({
@@ -50,7 +50,7 @@ export const protectRoute = async (req, res, next) => {
 
     const passwordsMatch = await compareHashes(password, user.password);
     if (!passwordsMatch) {
-      logger.error("Unauthorized: Invalid or Missing Authorization Header");
+      logger.warn("Unauthorized: Invalid or Missing Authorization Header");
       res
         .status(401)
         .json({
