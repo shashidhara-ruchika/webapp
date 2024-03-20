@@ -3,11 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const customFormat = format((info) => {
-  info.time = new Date().toISOString();
-  return info;
-});
-
 const wrapMessageWithColor = (message, level) => {
   let colorizeMessage;
   switch (level) {
@@ -23,16 +18,16 @@ const wrapMessageWithColor = (message, level) => {
   return colorizeMessage;
 };
 
-const consoleFormat = format.printf(({ level, message, time }) => {
+const consoleFormat = format.printf(({ level, message, timestamp }) => {
   const coloredMessage = wrapMessageWithColor(
-    `[${time}] [${level.toUpperCase()}] webapp - ${message}`,
+    `[${timestamp}] [${level.toUpperCase()}] webapp - ${message}`,
     level
   );
   return coloredMessage;
 });
 
 export const logger = createLogger({
-  format: format.combine(customFormat(), format.json()),
+  format: format.combine(format.timestamp(), format.json()),
   transports: [
     new transports.File({ filename: process.env.LOGGER_FILE_PATH }),
     new transports.Console({ format: consoleFormat }),
