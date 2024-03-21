@@ -36,7 +36,7 @@ build {
   }
 
   provisioner "file" {
-    source      = "./resources/config.yaml"
+    source      = "./resources/config2.yaml"
     destination = "/tmp/"
   }
 
