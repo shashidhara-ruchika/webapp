@@ -6,6 +6,7 @@ import {
 } from "../repositories/UserRepository.js";
 import { generateHash } from "./HashService.js";
 import { logger } from "./LoggerService.js";
+import { publishMessage } from "./PubSubService.js";
 import { mapUserToUserResponse } from "./mappers/UserMapper.js";
 
 export const createANewUser = async (userDetails) => {
@@ -18,6 +19,8 @@ export const createANewUser = async (userDetails) => {
   userDetails.password = await generateHash(userDetails.password);
 
   const newUser = await createUser(userDetails);
+
+  await publishMessage(process.env.TOPIC_VERIFY_EMAIL, { id: newUser.id, email: newUser.username })
 
   return mapUserToUserResponse(newUser.toJSON());
 };

@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/preset-env": "^7.23.9",
+    "@google-cloud/pubsub": "^4.3.3",
     "babel-jest": "^29.7.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.1",

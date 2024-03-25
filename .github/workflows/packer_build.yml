@@ -1,12 +1,12 @@
 name: Node.js Integration Test & Packer Build
 
-on:
-  pull_request:
-    types:
-      - closed
 # on:
 #   pull_request:
-#     branches: ["main"]
+#     types:
+#       - closed
+on:
+  pull_request:
+    branches: ["main"]
 
 jobs:
   packer_build:
@@ -29,6 +29,7 @@ jobs:
       DROP_DATABASE: ${{ secrets.DROP_DATABASE }}
       LOGGER_FILE_PATH: ${{ secrets.LOGGER_FILE_PATH }}
       LOGGER_LEVEL: ${{ secrets.LOGGER_LEVEL }}
+      TOPIC_VERIFY_EMAIL : ${{ secrets.TOPIC_VERIFY_EMAIL }}
 
     steps:
       - uses: actions/checkout@v4
