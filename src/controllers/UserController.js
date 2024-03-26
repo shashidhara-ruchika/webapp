@@ -8,6 +8,7 @@ import {
   createANewUser,
   getSelfUser,
   updateSelfUser,
+  verifyUserByUserID,
 } from "../services/UserService.js";
 
 export const createAUser = async (req, res) => {
@@ -82,6 +83,33 @@ export const updateSelfUserDetails = async (req, res, next) => {
     }
     if (error.name == ERROR_USER_FROM_REQUEST_NOT_FOUND) {
       logger.error(error.message);
+      return res
+        .status(error.statusCode)
+        .json({ message: error.message })
+        .end();
+    }
+    logger.error(
+      "Internal Server Error: Something went wrong\nError: " + error
+    );
+    return res.status(500).json({ message: "Something went wrong" }).end();
+  }
+};
+
+export const verifyUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    await verifyUserByUserID(userId);
+    return res.status(200).end();
+  } catch (error) {
+    if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
+      logger.error("Service Unavailable: Error:\n" + error);
+      return res
+        .status(error.statusCode)
+        .json({ message: error.message })
+        .end();
+    }
+    if (error.name == ERROR_USER_FROM_REQUEST_NOT_FOUND) {
+      logger.error(error.message + " " + req.params.id);
       return res
         .status(error.statusCode)
         .json({ message: error.message })

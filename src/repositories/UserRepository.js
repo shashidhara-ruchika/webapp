@@ -55,3 +55,24 @@ export const saveUser = async (user) => {
     throw error;
   }
 };
+
+export const findUserById = async (id) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: id,
+      },
+    });
+    logger.debug(
+      "[UserRepository] findUserById User: " + JSON.stringify(user, null, 2)
+    );
+    return user;
+  } catch (error) {
+    console.log(error);
+    if (error.name) {
+      throw new PostgresDBConnectionRefused();
+    }
+    logger.error("Error finding user by id:\n" + error);
+    throw error;
+  }
+};

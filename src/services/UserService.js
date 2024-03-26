@@ -3,6 +3,7 @@ import {
   findUserByUsername,
   createUser,
   saveUser,
+  findUserById,
 } from "../repositories/UserRepository.js";
 import { generateHash } from "./HashService.js";
 import { logger } from "./LoggerService.js";
@@ -20,7 +21,10 @@ export const createANewUser = async (userDetails) => {
 
   const newUser = await createUser(userDetails);
 
-  await publishMessage(process.env.TOPIC_VERIFY_EMAIL, { id: newUser.id, email: newUser.username })
+  await publishMessage(process.env.TOPIC_VERIFY_EMAIL, {
+    id: newUser.id,
+    email: newUser.username,
+  });
 
   return mapUserToUserResponse(newUser.toJSON());
 };
@@ -51,5 +55,31 @@ export const updateSelfUser = async (user, userDetails) => {
 
   const updatedUser = await saveUser(user);
 
-  logger.info("Updated User:\n" + updatedUser.toJSON());
+  logger.info("Updated User:\n" + JSON.stringify(updatedUser, null, 2));
+};
+
+export const verifyUserByUserID = async (userId) => {
+  const user = await findUserById(userId);
+
+  if (!user) {
+    throw new UserNotFound();
+  }
+
+  const currentTimestamp = new Date().getTime();
+  logger.debug(
+    "Current Timestamp: " +
+      currentTimestamp +
+      "Verification Email Sent Timestamp: " +
+      user.verification_email_sent_timestamp
+  );
+
+  if (
+    currentTimestamp - user.verification_email_sent_timestamp > process.env.VERIFY_EMAIL_EXPIRY_SECONDS * 1000
+  ) {
+    logger.warn("User Verification Expired for id: " + userId);
+  } else {
+    user.verified = true;
+    const updatedUser = await saveUser(user);
+    logger.info("User Verified: " + userId);
+  }
 };

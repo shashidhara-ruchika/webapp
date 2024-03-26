@@ -3,6 +3,7 @@ import {
   createAUser,
   getSelfUserDetails,
   updateSelfUserDetails,
+  verifyUser,
 } from "../controllers/UserController.js";
 import {
   validateNoBody,
@@ -61,3 +62,7 @@ userRouter.post("/self", setUserHeaders, handleMethodNotAllowed);
 userRouter.delete("/self", setUserHeaders, handleMethodNotAllowed);
 userRouter.patch("/self", setUserHeaders, handleMethodNotAllowed);
 userRouter.options("/self", setUserHeaders, handleMethodNotAllowed);
+
+// endpoint '/verify'
+
+userRouter.get("/verify/:id", setUserHeaders, verifyUser);
