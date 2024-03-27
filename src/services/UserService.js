@@ -1,4 +1,8 @@
-import { UserAlreadyExists, UserNotFound } from "../errors/UserError.js";
+import {
+  UserAlreadyExists,
+  UserNotFound,
+  UserVerificationLinkExpired,
+} from "../errors/UserError.js";
 import {
   findUserByUsername,
   createUser,
@@ -66,6 +70,7 @@ export const verifyUserByUserID = async (userId) => {
   }
 
   if (user.verified) {
+    logger.warn("User Already Verified: " + userId);
     return;
   }
 
@@ -81,7 +86,7 @@ export const verifyUserByUserID = async (userId) => {
     currentTimestamp - user.verification_email_sent_timestamp >
     process.env.VERIFY_EMAIL_EXPIRY_SECONDS * 1000
   ) {
-    logger.warn("User Verification Expired for id: " + userId);
+    throw new UserVerificationLinkExpired();
   } else {
     user.verified = true;
     const updatedUser = await saveUser(user);
