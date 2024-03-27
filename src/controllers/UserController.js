@@ -100,7 +100,7 @@ export const verifyUser = async (req, res) => {
   try {
     const userId = req.params.id;
     await verifyUserByUserID(userId);
-    return res.status(200).end();
+    return res.status(200).json({message: "User verification sucess!"}).end();
   } catch (error) {
     if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
       logger.error("Service Unavailable: Error:\n" + error);
