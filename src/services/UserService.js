@@ -65,6 +65,10 @@ export const verifyUserByUserID = async (userId) => {
     throw new UserNotFound();
   }
 
+  if (user.verified) {
+    return;
+  }
+
   const currentTimestamp = new Date().getTime();
   logger.debug(
     "Current Timestamp: " +
@@ -74,7 +78,8 @@ export const verifyUserByUserID = async (userId) => {
   );
 
   if (
-    currentTimestamp - user.verification_email_sent_timestamp > process.env.VERIFY_EMAIL_EXPIRY_SECONDS * 1000
+    currentTimestamp - user.verification_email_sent_timestamp >
+    process.env.VERIFY_EMAIL_EXPIRY_SECONDS * 1000
   ) {
     logger.warn("User Verification Expired for id: " + userId);
   } else {

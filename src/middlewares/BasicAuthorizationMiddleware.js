@@ -60,6 +60,17 @@ export const protectRoute = async (req, res, next) => {
       return res;
     }
 
+    if (user.verified == false) {
+      logger.warn("Unauthorized: User is not verified");
+      res
+        .status(403)
+        .json({
+          message: "Unauthorized: User is not verified",
+        })
+        .end();
+      return res;
+    }
+
     req.user = user;
   } catch (error) {
     if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {

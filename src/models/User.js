@@ -42,7 +42,7 @@ export const User = postgresDBConnection.define(
     verification_email_sent_timestamp: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      defaultValue: null,
     },
   },
   {

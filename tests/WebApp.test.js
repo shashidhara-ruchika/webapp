@@ -1,5 +1,6 @@
 import request from "supertest";
 import { closeServer, app } from "../app";
+import { findUserById, saveUser } from "../src/repositories/UserRepository";
 
 let appServer;
 
@@ -60,6 +61,10 @@ describe("Assignment 3 | Test 1 | Create User Account Success", () => {
       .post(userPath)
       .send(createUserRequestBody);
     expect(createUserResponse.statusCode).toEqual(201);
+
+    const createdUser = await findUserById(createUserResponse.body.id);
+    createdUser.verified = true;
+    await saveUser(createdUser);
 
     const fetchUserResponse = await request(app)
       .get(userPath + selfPath)
