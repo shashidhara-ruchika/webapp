@@ -12,7 +12,7 @@ import {
 import { generateHash } from "./HashService.js";
 import { logger } from "./LoggerService.js";
 import { publishMessage } from "./PubSubService.js";
-import { mapUserToUserResponse } from "./mappers/UserMapper.js";
+import { mapUserToUserResponse, mapUsertoReadableUser } from "./mappers/UserMapper.js";
 import { v4 as uuidv4 } from "uuid";
 
 export const createANewUser = async (userDetails) => {
@@ -64,7 +64,7 @@ export const updateSelfUser = async (user, userDetails) => {
 
   const updatedUser = await saveUser(user);
 
-  logger.info("Updated User:\n" + mapUserToUserResponse(updatedUser));
+  logger.info("Updated User:\n" + JSON.stringify(mapUsertoReadableUser(user), null, 2));
 };
 
 export const verifyUserByUserToken = async (userToken) => {
