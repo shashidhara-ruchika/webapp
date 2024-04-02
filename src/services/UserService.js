@@ -75,19 +75,26 @@ export const verifyUserByUserToken = async (userToken) => {
   }
 
   if (user.verified) {
-    logger.warn("User Already Verified: " + userToken);
+    logger.warn(`User ${user.id} already Verified: ` + userToken);
+    return;
+  }
+
+  if (user.verification_expiry_timestamp == null) {
+    logger.warn(`User ${user.id} verification timestamp is null`);
+    // TODO: Throw error null expiry timestamp message
     return;
   }
 
   const currentTimestamp = new Date().getTime();
+  const expiryTimestamp = user.verification_expiry_timestamp.getTime();
   logger.debug(
     "Current Timestamp: " +
       currentTimestamp +
       " Verification Expiry Timestamp: " +
-      user.verification_expiry_timestamp
+      expiryTimestamp
   );
 
-  if (currentTimestamp > user.verification_expiry_timestamp) {
+  if (currentTimestamp > expiryTimestamp) {
     throw new UserVerificationLinkExpired();
   } else {
     user.verified = true;
