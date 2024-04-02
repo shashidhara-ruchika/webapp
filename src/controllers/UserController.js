@@ -9,7 +9,7 @@ import {
   createANewUser,
   getSelfUser,
   updateSelfUser,
-  verifyUserByUserID,
+  verifyUserByUserToken,
 } from "../services/UserService.js";
 
 export const createAUser = async (req, res) => {
@@ -98,9 +98,9 @@ export const updateSelfUserDetails = async (req, res, next) => {
 
 export const verifyUser = async (req, res) => {
   try {
-    const userId = req.params.id;
-    await verifyUserByUserID(userId);
-    return res.status(200).json({message: "User verification sucess!"}).end();
+    const userToken = req.params.id;
+    await verifyUserByUserToken(userToken);
+    return res.status(200).json({ message: "User verification sucess!" }).end();
   } catch (error) {
     if (error.name == POSTGRESQLDB_CONNECTION_REFUSED) {
       logger.error("Service Unavailable: Error:\n" + error);

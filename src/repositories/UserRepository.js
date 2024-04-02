@@ -1,6 +1,7 @@
 import { PostgresDBConnectionRefused } from "../errors/CommonError.js";
 import { User } from "../models/User.js";
 import { logger } from "../services/LoggerService.js";
+import { mapUsertoReadableUser } from "../services/mappers/UserMapper.js";
 
 export const findUserByUsername = async (username) => {
   try {
@@ -10,8 +11,8 @@ export const findUserByUsername = async (username) => {
       },
     });
     logger.debug(
-      "[UserRepository] findUserByUsername User: " +
-        JSON.stringify(user, null, 2)
+      `[UserRepository] findUserByUsername: ${username} User: ` +
+        JSON.stringify(mapUsertoReadableUser(user), null, 2)
     );
     return user;
   } catch (error) {
@@ -19,7 +20,7 @@ export const findUserByUsername = async (username) => {
     if (error.name) {
       throw new PostgresDBConnectionRefused();
     }
-    logger.error("Error finding user by username:\n" + error);
+    logger.error(`Error finding user by username ${username}:\n` + error);
     throw error;
   }
 };
@@ -28,14 +29,15 @@ export const createUser = async (user) => {
   try {
     const newUser = await User.create(user);
     logger.debug(
-      "[UserRepository] createUser User: " + JSON.stringify(newUser, null, 2)
+      "[UserRepository] createUser User: " +
+        JSON.stringify(mapUsertoReadableUser(newUser), null, 2)
     );
     return newUser;
   } catch (error) {
     if (error.name) {
       throw new PostgresDBConnectionRefused();
     }
-    logger.error("Error creating user:\n" + error);
+    logger.error(`Error creating user with email ${user.username}:\n` + error);
     throw error;
   }
 };
@@ -44,7 +46,8 @@ export const saveUser = async (user) => {
   try {
     const updatedUser = await user.save();
     logger.debug(
-      "[UserRepository] saveUser User: " + JSON.stringify(updatedUser, null, 2)
+      "[UserRepository] saveUser User: " +
+        JSON.stringify(mapUsertoReadableUser(updatedUser), null, 2)
     );
     return updatedUser;
   } catch (error) {
@@ -64,7 +67,8 @@ export const findUserById = async (id) => {
       },
     });
     logger.debug(
-      "[UserRepository] findUserById User: " + JSON.stringify(user, null, 2)
+      `[UserRepository] findUserById ${id} User: ` +
+        JSON.stringify(mapUsertoReadableUser(user), null, 2)
     );
     return user;
   } catch (error) {
@@ -72,7 +76,31 @@ export const findUserById = async (id) => {
     if (error.name) {
       throw new PostgresDBConnectionRefused();
     }
-    logger.error("Error finding user by id:\n" + error);
+    logger.error(`Error finding user by id ${id}:\n` + error);
+    throw error;
+  }
+};
+
+export const findUserByVerificationToken = async (verificationToken) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        verification_token: verificationToken,
+      },
+    });
+    logger.debug(
+      `[UserRepository] findUserByVerificationToken ${verificationToken} User: ` +
+        JSON.stringify(mapUsertoReadableUser(user), null, 2)
+    );
+    return user;
+  } catch (error) {
+    console.log(error);
+    if (error.name) {
+      throw new PostgresDBConnectionRefused();
+    }
+    logger.error(
+      `Error finding user by verification token ${verificationToken}:\n` + error
+    );
     throw error;
   }
 };

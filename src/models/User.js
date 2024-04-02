@@ -39,10 +39,13 @@ export const User = postgresDBConnection.define(
       allowNull: false,
       defaultValue: false,
     },
-    verification_email_sent_timestamp: {
+    verification_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    verification_expiry_timestamp: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: null,
     },
   },
   {
