@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { logger } from "../services/LoggerService.js";
+import { validate as uuidValidate } from "uuid";
 
 const strongPasswordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,50}$/;
@@ -70,5 +71,14 @@ export const setUserHeaders = (req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "*");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Expires", "-1");
+  next();
+};
+
+export const validateUserToken = (req, res, next) => {
+  const userToken = req.params.id;
+  if (!uuidValidate(userToken)) {
+    logger.error("Bad Request: Invalid User Token");
+    return res.status(400).json({ message: "Invalid User Token" }).end();
+  }
   next();
 };

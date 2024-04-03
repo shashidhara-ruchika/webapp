@@ -3,6 +3,7 @@ import {
   ERROR_USER_ALREADY_EXISTS,
   ERROR_USER_FROM_REQUEST_NOT_FOUND,
   ERROR_USER_VERIFICATION_LINK_EXPIRED,
+  ERROR_USER_VERIFICATION_TIMESTAMP_NULL,
 } from "../errors/UserError.js";
 import { logger } from "../services/LoggerService.js";
 import {
@@ -119,6 +120,15 @@ export const verifyUser = async (req, res) => {
     if (error.name == ERROR_USER_VERIFICATION_LINK_EXPIRED) {
       logger.error(
         "Verification Link Expired " + error.message + " " + req.params.id
+      );
+      return res
+        .status(error.statusCode)
+        .json({ message: error.message })
+        .end();
+    }
+    if (error.name == ERROR_USER_VERIFICATION_TIMESTAMP_NULL) {
+      logger.error(
+        "Verification Timestamp Null " + error.message + " " + req.params.id
       );
       return res
         .status(error.statusCode)

@@ -2,6 +2,7 @@ import {
   UserAlreadyExists,
   UserNotFound,
   UserVerificationLinkExpired,
+  UserVerificationTimestampNull,
 } from "../errors/UserError.js";
 import {
   findUserByUsername,
@@ -12,7 +13,10 @@ import {
 import { generateHash } from "./HashService.js";
 import { logger } from "./LoggerService.js";
 import { publishMessage } from "./PubSubService.js";
-import { mapUserToUserResponse, mapUsertoReadableUser } from "./mappers/UserMapper.js";
+import {
+  mapUserToUserResponse,
+  mapUsertoReadableUser,
+} from "./mappers/UserMapper.js";
 import { v4 as uuidv4 } from "uuid";
 
 export const createANewUser = async (userDetails) => {
@@ -64,7 +68,9 @@ export const updateSelfUser = async (user, userDetails) => {
 
   const updatedUser = await saveUser(user);
 
-  logger.info("Updated User:\n" + JSON.stringify(mapUsertoReadableUser(user), null, 2));
+  logger.info(
+    "Updated User:\n" + JSON.stringify(mapUsertoReadableUser(user), null, 2)
+  );
 };
 
 export const verifyUserByUserToken = async (userToken) => {
@@ -81,8 +87,7 @@ export const verifyUserByUserToken = async (userToken) => {
 
   if (user.verification_expiry_timestamp == null) {
     logger.warn(`User ${user.id} verification timestamp is null`);
-    // TODO: Throw error null expiry timestamp message
-    return;
+    throw new UserVerificationTimestampNull();
   }
 
   const currentTimestamp = new Date().getTime();
