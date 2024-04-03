@@ -37,3 +37,17 @@ export class UserVerificationLinkExpired extends Error {
     return 410;
   }
 }
+
+export const ERROR_USER_VERIFICATION_TIMESTAMP_NULL =
+  "UserVerificationTimestampNull";
+export class UserVerificationTimestampNull extends Error {
+  get message() {
+    return "Verification email is not sent to user";
+  }
+  get name() {
+    return ERROR_USER_VERIFICATION_TIMESTAMP_NULL;
+  }
+  get statusCode() {
+    return 400;
+  }
+}

@@ -14,6 +14,7 @@ import {
   setUserHeaders,
   validateCreateUserDetails,
   validateUpdateUserDetails,
+  validateUserToken,
 } from "../middlewares/UserMiddleware.js";
 import { protectRoute } from "../middlewares/BasicAuthorizationMiddleware.js";
 
@@ -65,4 +66,4 @@ userRouter.options("/self", setUserHeaders, handleMethodNotAllowed);
 
 // endpoint '/verify'
 
-userRouter.get("/verify/:id", setUserHeaders, verifyUser);
+userRouter.get("/verify/:id", setUserHeaders, validateUserToken, verifyUser);
