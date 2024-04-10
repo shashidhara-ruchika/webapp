@@ -134,7 +134,7 @@ jobs:
           echo "Image Family Name: $IMAGE_FAMILY"
 
       - name: Packer Build
-        run: packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'database_name=${{ secrets.DATABASE_NAME }}' -var 'database_user=${{ secrets.DATABASE_USER }}' -var 'database_password=${{ secrets.DATABASE_PASSWORD }}' -var 'machine_type=${{ secrets.PACKER_MACHINE_TYPE }}' -var 'zone=${{ secrets.PACKER_ZONE }}' -var 'region=${{ secrets.PACKER_REGION }} -var 'image_name=${{ steps.create_image_name.outputs.IMAGE_NAME }}' -var 'image_family=${{ steps.create_image_family.outputs.IMAGE_FAMILY }}'./packer
+        run: packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'database_name=${{ secrets.DATABASE_NAME }}' -var 'database_user=${{ secrets.DATABASE_USER }}' -var 'database_password=${{ secrets.DATABASE_PASSWORD }}' -var 'machine_type=${{ secrets.PACKER_MACHINE_TYPE }}' -var 'zone=${{ secrets.PACKER_ZONE }}' -var 'region=${{ secrets.PACKER_REGION }}' -var 'image_name=${{ steps.create_image_name.outputs.IMAGE_NAME }}' -var 'image_family=${{ steps.create_image_family.outputs.IMAGE_FAMILY }}' ./packer
 
       - name: Create Instance Template
         id: create_instance_template
