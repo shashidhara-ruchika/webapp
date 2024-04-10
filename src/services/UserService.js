@@ -85,13 +85,15 @@ export const verifyUserByUserToken = async (userToken) => {
     return;
   }
 
-  if (user.verification_expiry_timestamp == null) {
-    logger.warn(`User ${user.id} verification timestamp is null`);
-    throw new UserVerificationTimestampNull();
-  }
-
   const currentTimestamp = new Date().getTime();
-  const expiryTimestamp = user.verification_expiry_timestamp.getTime();
+  let expiryTimestamp;
+  if (user.verification_expiry_timestamp == null) {
+    expiryTimestamp = new Date(
+      new Date().getTime() + process.env.VERIFY_EMAIL_EXPIRY_SECONDS * 1000
+    ).getTime();
+  } else {
+    expiryTimestamp = user.verification_expiry_timestamp.getTime();
+  }
   logger.debug(
     "Current Timestamp: " +
       currentTimestamp +
