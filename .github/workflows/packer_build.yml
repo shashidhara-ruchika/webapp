@@ -137,7 +137,8 @@ jobs:
           echo "::set-output name=IMAGE_FAMILY::$IMAGE_FAMILY"
 
       - name: Packer Build
-        run: packer build \
+        run: |
+          packer build \
           -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' \
           -var 'database_name=${{ secrets.DATABASE_NAME }}' \
           -var 'database_user=${{ secrets.DATABASE_USER }}' \
