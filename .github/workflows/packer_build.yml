@@ -180,7 +180,7 @@ jobs:
       - name: Update Managed Instance Group
         id: update_managed_instance_group
         run: |
-          NEW_INSTANCE_TEMPLATE_LINK=$(gcloud compute instance-templates describe ${{ steps.create_instance_template.outputs.NEW_INSTANCE_TEMPLATE_NAME }} --region=$REGION --format="value(selfLink)")
+          NEW_INSTANCE_TEMPLATE_LINK=$(gcloud compute instance-templates describe ${{ steps.create_instance_template.outputs.NEW_INSTANCE_TEMPLATE_NAME }} --region=${REGION} --format="value(selfLink)")
           MANAGED_INSTANCE_GROUP_NAME=$(gcloud compute instance-groups managed list --sort-by=creationTimestamp --limit=1 --format="value(name)")
           REGION=${{ secrets.PACKER_REGION }}
           echo "Initialised New Managed Instance Group Variables"
