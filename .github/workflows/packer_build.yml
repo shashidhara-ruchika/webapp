@@ -1,12 +1,12 @@
 name: Node.js Integration Test & Packer Build
 
-on:
-  pull_request:
-    types:
-      - closed
 # on:
 #   pull_request:
-#     branches: ["main"]
+#     types:
+#       - closed
+on:
+  pull_request:
+    branches: ["main"]
 
 jobs:
   packer_build:
@@ -113,5 +113,83 @@ jobs:
       - name: Packer Init
         run: packer init ./packer
 
+      - name: Create Timestamp
+        id: create_timestamp
+        run: |
+          TIMESTAMP=$(date +%s%3)
+          echo "Timestamp: $TIMESTAMP"
+
+      - name: Create Image Name
+        id: create_image_name
+        run: |
+          IMAGE_NAME="csye6225-webapp-image-${{steps.create_timestamp.outputs.TIMESTAMP}}"
+          echo "Image Name: $IMAGE_NAME"
+
+      - name: Create Image Family Name
+        id: create_image_family
+        run: |
+          IMAGE_FAMILY="csye6225-webapp-image-family"
+          echo "Image Family Name: $IMAGE_FAMILY"
+
       - name: Packer Build
-        run: packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'database_name=${{ secrets.DATABASE_NAME }}' -var 'database_user=${{ secrets.DATABASE_USER }}' -var 'database_password=${{ secrets.DATABASE_PASSWORD }}' -var 'machine_type=${{ secrets.PACKER_MACHINE_TYPE }}' -var 'zone=${{ secrets.PACKER_ZONE }}' -var 'region=${{ secrets.PACKER_REGION }}' ./packer
+        run: packer build -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' -var 'database_name=${{ secrets.DATABASE_NAME }}' -var 'database_user=${{ secrets.DATABASE_USER }}' -var 'database_password=${{ secrets.DATABASE_PASSWORD }}' -var 'machine_type=${{ secrets.PACKER_MACHINE_TYPE }}' -var 'zone=${{ secrets.PACKER_ZONE }}' -var 'region=${{ secrets.PACKER_REGION }} -var 'image_name=${{ steps.create_image_name.outputs.IMAGE_NAME }}' -var 'image_family=${{ steps.create_image_family.outputs.IMAGE_FAMILY }}'./packer
+
+      - name: Create Instance Template
+        id: create_instance_template
+        run: |
+          NEW_INSTANCE_TEMPLATE_NAME="webapp-instance-template-${{steps.create_timestamp.outputs.TIMESTAMP}}"
+          OLD_INSTANCE_TEMPLATE_NAME=$(gcloud compute instance-templates list --sort-by=creationTimestamp --limit=1 --format="value(name)")
+          REGION=${{ secrets.PACKER_REGION }}
+          MACHINE_TYPE=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.machineType)")
+          NETWORK=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.networkInterfaces.network)"
+          SUBNET=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.networkInterfaces.subnetwork)")
+          NEW_IMAGE_LINK=$(gcloud compute images describe ${{ steps.create_image_name.outputs.IMAGE_NAME }} --format="value(selfLink)")
+          BOOT_DISK_KMS_KEY=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.disks.diskEncryptionKey.kmsKeyName")
+          BOOT_DISK_SIZE=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.disks.initializeParams.diskSizeGb)")
+          BOOT_DISK_TYPE=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.disks.initializeParams.diskType)")
+          LABELS=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.labels)")
+          TAGS=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.tags.items)")
+          METADATA=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.metadata.items.value)")
+          SERVICE_ACCOUNT=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.serviceAccounts.email)")
+          SCOPES=$(gcloud compute instance-templates describe $OLD_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(properties.serviceAccounts.scopes)")
+          SCOPES=$(echo "$SCOPES" | sed "s/\[\|\]//g")
+          SCOPES=$(echo "$SCOPES" | sed "s/ *', *'/,/g")
+          SCOPES=$(echo "$SCOPES" | sed "s/^'//;s/'$//")
+          echo "Initialised New Instance Template Variables" 
+          gcloud compute instance-templates create ${NEW_INSTANCE_TEMPLATE_NAME} \
+          --instance-template-region=${REGION} \
+          --machine-type=${MACHINE_TYPE} \
+          --region=${REGION} \
+          --network=${NETWORK} \
+          --subnet=${SUBNET} \
+          --create-disk=image=${NEW_IMAGE_LINK},boot=yes,auto-delete=yes,device-name=persistent-disk-0,size=${BOOT_DISK_SIZE},type=${BOOT_DISK_TYPE},kms-key=${BOOT_DISK_KMS_KEY} \
+          --labels=${LABELS} \
+          --tags=${TAGS} \
+          --metadata=startup-script='${METADATA}' \
+          --service-account=${SERVICE_ACCOUNT} \
+          --scopes=${SCOPES} \
+          --reservation-affinity=any
+          echo "Instance Template Created"
+
+      - name: Update Managed Instance Group
+        id: update_managed_instance_group
+        run: |
+          NEW_INSTANCE_TEMPLATE_LINK=$(gcloud compute instance-templates describe $NEW_INSTANCE_TEMPLATE_NAME --region=$REGION --format="value(selfLink)")
+          MANAGED_INSTANCE_GROUP_NAME=$(gcloud compute instance-groups managed list --sort-by=creationTimestamp --limit=1 --format="value(name)")
+          REGION=${{ secrets.PACKER_REGION }}
+          echo "Initialised New Managed Instance Group Variables"
+          gcloud compute instance-groups managed rolling-action start-update ${MANAGED_INSTANCE_GROUP_NAME} --version template=${NEW_INSTANCE_TEMPLATE_LINK} --region=${REGION}
+          echo "Managed Instance Group Updated"
+
+      - name: Wait Until Managed Instance Group is Stable
+        id: wait_until_managed_instance_group_is_stable
+        run: |
+          REGION=${{ secrets.PACKER_REGION }}
+          gcloud compute instance-groups managed wait-until ${{ steps.update_managed_instance_group.outputs.MANAGED_INSTANCE_GROUP_NAME }} \
+          --version-target-reached \
+          --region=${REGION}
+          echo "Managed Instance group is stable"
+
+
+
+      
