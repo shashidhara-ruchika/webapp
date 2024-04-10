@@ -170,7 +170,7 @@ jobs:
           --create-disk=image=${NEW_IMAGE_LINK},boot=yes,auto-delete=yes,device-name=persistent-disk-0,size=${BOOT_DISK_SIZE},type=${BOOT_DISK_TYPE},kms-key=${BOOT_DISK_KMS_KEY} \
           --labels=${LABELS} \
           --tags=${TAGS} \
-          --metadata=startup-script=${METADATA} \
+          --metadata=startup-script="'${METADATA}'" \
           --service-account=${SERVICE_ACCOUNT} \
           --scopes=${SCOPES} \
           --reservation-affinity=any
