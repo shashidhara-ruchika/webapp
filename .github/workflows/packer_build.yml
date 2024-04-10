@@ -7,7 +7,7 @@ name: Node.js Integration Test & Packer Build
 
 on:
   pull_request:
-    branches: 
+    branches:
       - main
 
 jobs:
@@ -124,7 +124,7 @@ jobs:
       - name: Create Image Name
         id: create_image_name
         run: |
-          IMAGE_NAME="csye6225-webapp-image-${{steps.create_timestamp.outputs.TIMESTAMP}}"
+          IMAGE_NAME="csye6225-webapp-image-${{ steps.create_timestamp.outputs.TIMESTAMP }}"
           echo "Image Name: $IMAGE_NAME"
 
       - name: Create Image Family Name
@@ -139,7 +139,7 @@ jobs:
       - name: Create Instance Template
         id: create_instance_template
         run: |
-          NEW_INSTANCE_TEMPLATE_NAME="webapp-instance-template-${{steps.create_timestamp.outputs.TIMESTAMP}}"
+          NEW_INSTANCE_TEMPLATE_NAME="webapp-instance-template-${{ steps.create_timestamp.outputs.TIMESTAMP }}"
           OLD_INSTANCE_TEMPLATE_NAME=$(gcloud compute instance-templates list --sort-by=creationTimestamp --limit=1 --format="value(name)")
           REGION=${{ secrets.PACKER_REGION }}
           MACHINE_TYPE=$(gcloud compute instance-templates describe ${OLD_INSTANCE_TEMPLATE_NAME} --region=${REGION} --format="value(properties.machineType)")
@@ -191,11 +191,3 @@ jobs:
           --version-target-reached \
           --region=${REGION}
           echo "Managed Instance group is stable"
-
-
-
-      
-
-
-
-
