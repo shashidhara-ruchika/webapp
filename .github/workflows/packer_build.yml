@@ -120,11 +120,12 @@ jobs:
         run: |
           TIMESTAMP=$(date +%s)
           echo "Timestamp: $TIMESTAMP"
+          echo "::set-env name=TIMESTAMP::$TIMESTAMP"
 
       - name: Create Image Name
         id: create_image_name
         run: |
-          IMAGE_NAME="csye6225-webapp-image-${TIMESTAMP}"
+          IMAGE_NAME="csye6225-webapp-image-$TIMESTAMP"
           echo "Image Name: $IMAGE_NAME"
 
       - name: Create Image Family Name
