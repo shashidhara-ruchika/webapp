@@ -118,7 +118,7 @@ jobs:
       - name: Create Timestamp
         id: create_timestamp
         run: |
-          TIMESTAMP=$(date +%s%3)
+          TIMESTAMP=$(date + %s)
           echo "Timestamp: $TIMESTAMP"
 
       - name: Create Image Name
