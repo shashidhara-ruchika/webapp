@@ -125,14 +125,14 @@ jobs:
       - name: Create Image Name
         id: create_image_name
         run: |
-          IMAGE_NAME="csye6225-webapp-image-${{ steps.create_timestamp.outputs.TIMESTAMP }}"
+          IMAGE_NAME="${{ secrets.IMAGE_NAME_HEADER }}-${{ steps.create_timestamp.outputs.TIMESTAMP }}"
           echo "Image Name: $IMAGE_NAME"
           echo "::set-output name=IMAGE_NAME::$IMAGE_NAME"
 
       - name: Create Image Family Name
         id: create_image_family
         run: |
-          IMAGE_FAMILY="csye6225-webapp-image-family"
+          IMAGE_FAMILY="${{ secrets.IMAGE_FAMILY }}"
           echo "Image Family Name: $IMAGE_FAMILY"
           echo "::set-output name=IMAGE_FAMILY::$IMAGE_FAMILY"
 
