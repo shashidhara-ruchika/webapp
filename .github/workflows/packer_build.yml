@@ -120,12 +120,12 @@ jobs:
         run: |
           TIMESTAMP=$(date +%s)
           echo "Timestamp: $TIMESTAMP"
-          echo "::set-output name=timestamp::$(date +%s)"
+          echo "::set-output name=TIMESTAMP::$(date +%s)"
 
       - name: Create Image Name
         id: create_image_name
         run: |
-          IMAGE_NAME="csye6225-webapp-image-$TIMESTAMP"
+          IMAGE_NAME="csye6225-webapp-image-${{ steps.create_timestamp.outputs.timestamp }}"
           echo "Image Name: $IMAGE_NAME"
 
       - name: Create Image Family Name
