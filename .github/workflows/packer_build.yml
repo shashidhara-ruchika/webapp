@@ -125,7 +125,7 @@ jobs:
       - name: Create Image Name
         id: create_image_name
         run: |
-          IMAGE_NAME="csye6225-webapp-image-${{ steps.create_timestamp.outputs.timestamp }}"
+          IMAGE_NAME="csye6225-webapp-image-${{ steps.create_timestamp.outputs.TIMESTAMP }}"
           echo "Image Name: $IMAGE_NAME"
 
       - name: Create Image Family Name
