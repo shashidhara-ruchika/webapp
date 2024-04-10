@@ -120,7 +120,7 @@ jobs:
         run: |
           TIMESTAMP=$(date +%s)
           echo "Timestamp: $TIMESTAMP"
-          echo "::set-env name=TIMESTAMP::$TIMESTAMP"
+          echo "::set-output name=timestamp::$(date +%s)"
 
       - name: Create Image Name
         id: create_image_name
