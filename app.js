@@ -19,7 +19,7 @@ testPostgresDBConnection()
   });
 
 app.use("/healthz", healthcheckRouter);
-app.use("/v1/user", userRouter);
+app.use("/v3/user", userRouter);
 
 const PORT = process.env.port || 8080;
 export const server = app.listen(PORT, () => {

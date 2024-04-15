@@ -46,7 +46,7 @@ const createBasicAuth = (username, password) => {
   return "Basic " + Buffer.from(username + ":" + password).toString("base64");
 };
 
-const userPath = "/v1/user";
+const userPath = "/v3/user";
 const selfPath = "/self";
 
 describe("Assignment 3 | Test 1 | Create User Account Success", () => {
